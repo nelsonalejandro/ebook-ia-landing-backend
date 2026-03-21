@@ -113,7 +113,7 @@ export class EmailService {
   }
 
   private async getEmailTemplate(amazonLink: string, price?: number): Promise<string> {
-    const templatePath = path.join(process.cwd(), 'src', 'email_template.html');
+    const templatePath = path.join(process.cwd(), 'email_template.html');
     let html = fs.readFileSync(templatePath, 'utf-8');
     html = html.replace(/\{\{AMAZON_LINK\}\}/g, amazonLink || '#');
     html = html.replace(/\{\{PRICE\}\}/g, price ? `$${price} USD` : '$9.99 USD');

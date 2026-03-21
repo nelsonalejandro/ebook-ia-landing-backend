@@ -60,10 +60,19 @@ export class EmailService {
   }
 
   private async sendEmailJob(email: string, ip: string, amazonLink: string, price?: number): Promise<void> {
+    console.log('📧 Iniciando envío a:', email);
+    console.log('📧 CWD:', process.cwd());
+    
+    const templatePath = path.join(process.cwd(), 'email_template.html');
+    console.log('📧 Template path:', templatePath);
+    console.log('📧 Template existe:', fs.existsSync(templatePath));
+
     const htmlBody = await this.getEmailTemplate(amazonLink, price);
+    console.log('📧 HTML body length:', htmlBody.length);
 
     const pdfPath = path.join(process.cwd(), 'public', 'assets', 'primer_capitulo_gratis.pdf');
     const pdfBuffer = fs.existsSync(pdfPath) ? fs.readFileSync(pdfPath) : null;
+    console.log('📧 PDF existe:', fs.existsSync(pdfPath));
 
     const profileImgPath = path.join(process.cwd(), 'src', 'img', 'perfil.png');
     const profileImgBuffer = fs.existsSync(profileImgPath) ? fs.readFileSync(profileImgPath) : null;
@@ -97,6 +106,8 @@ export class EmailService {
       });
     }
 
+    console.log('📧 Attachments:', attachments.length);
+
     const mailOptions: nodemailer.SendMailOptions = {
       from: `"Nelson Ramos" <${process.env.EMAIL_USER}>`,
       to: email,
@@ -108,6 +119,7 @@ export class EmailService {
       mailOptions.attachments = attachments;
     }
 
+    console.log('📧 Enviando email...');
     await this.transporter.sendMail(mailOptions);
     console.log(`✅ Email enviado a ${email} desde IP: ${ip}`);
   }

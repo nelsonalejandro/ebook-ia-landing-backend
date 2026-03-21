@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prompt Engineering</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.6;
+      color: #f8fafc;
+      background-color: #061820;
+    }
+    
+    .email-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: linear-gradient(180deg, #061820 0%, #0a1f2e 100%);
+    }
+    
+    .header {
+      padding: 40px 32px 32px;
+      text-align: center;
+      background: linear-gradient(135deg, #061820 0%, #0b303c 100%);
+      border-bottom: 3px solid #F5C211;
+      position: relative;
+    }
+    
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 200px;
+      background: radial-gradient(ellipse at center top, rgba(245, 194, 17, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    
+    .header h1 {
+      color: #F5C211;
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+      text-shadow: 0 0 40px rgba(245, 194, 17, 0.3);
+    }
+    
+    .header p {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .author-section {
+      text-align: center;
+      padding: 32px 32px 24px;
+    }
+    
+    .author-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 3px solid #F5C211;
+      box-shadow: 0 0 30px rgba(245, 194, 17, 0.4);
+      margin-bottom: 16px;
+      object-fit: cover;
+    }
+    
+    .greeting {
+      font-size: 15px;
+      color: #f8fafc;
+      margin-bottom: 24px;
+    }
+    
+    .greeting strong {
+      color: #F5C211;
+    }
+    
+    .content {
+      padding: 0 32px 32px;
+    }
+    
+    .content p {
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 16px;
+      line-height: 1.7;
+    }
+    
+    .highlight-box {
+      background: rgba(245, 194, 17, 0.1);
+      border: 1px solid rgba(245, 194, 17, 0.3);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin: 24px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .highlight-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #F5C211, transparent);
+    }
+    
+    .coffee-section {
+      text-align: center;
+      padding: 8px 0 16px;
+    }
+    
+    .coffee-image {
+      max-width: 280px;
+      height: auto;
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
+    
+    .coffee-text {
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.7);
+      font-style: italic;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    .highlight-icon {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+    
+    .highlight-title {
+      color: #F5C211;
+      font-weight: 700;
+      font-size: 15px;
+      margin-bottom: 8px;
+    }
+    
+    .highlight-text {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    
+    .cta-section {
+      text-align: center;
+      padding: 32px 0;
+    }
+    
+    .cta-button {
+      display: inline-block;
+      padding: 16px 40px;
+      background: linear-gradient(135deg, #F5C211 0%, #D4A70D 100%);
+      color: #000000 !important;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0.3px;
+      box-shadow: 0 4px 20px rgba(245, 194, 17, 0.4);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 30px rgba(245, 194, 17, 0.5);
+    }
+    
+    .signature {
+      padding: 24px 32px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+    }
+    
+    .signature p {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+    
+    .signature .name {
+      color: #F5C211;
+      font-weight: 700;
+      font-size: 16px;
+    }
+    
+    .signature .title {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 12px;
+      margin-top: 4px;
+    }
+    
+    .footer {
+      padding: 24px 32px;
+      background: rgba(6, 24, 32, 0.8);
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .footer p {
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+    
+    .footer a {
+      color: rgba(255, 255, 255, 0.5);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    
+    .footer a:hover {
+      color: #F5C211;
+    }
+
+    @media only screen and (max-width: 480px) {
+      .header { padding: 32px 20px 24px; }
+      .header h1 { font-size: 22px; }
+      .content { padding: 0 20px 24px; }
+      .author-section { padding: 24px 20px 20px; }
+      .cta-button { padding: 14px 32px; font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="email-container">
+    <div class="header">
+      <h1>Prompt Engineering</h1>
+      <p>Primera edición · Marzo 2026</p>
+    </div>
+    
+    <div class="author-section">
+      <div class="greeting">
+        <strong>¡Hola!</strong><br>
+        Gracias por tu interés en el libro.
+      </div>
+    </div>
+    
+    <div class="content">
+      <p>Como lo prometimos, el <strong>primer capítulo del libro va adjunto a este email</strong>, listo para leer en tu dispositivo favorito.</p>
+      
+      <div class="highlight-box">
+        <div class="highlight-text">
+          <p style="font-size: 16px; font-weight: 700; margin-bottom: 8px; color: #F5C211;">Capítulo 1: "El Costo Oculto de Solo Usar ChatGPT"</p>
+          <p style="margin: 0;">Aprende a auditar y optimizar tus costos de API en solo 15 minutos. Un capítulo que puede ahorrarte cientos de dólares al mes.</p>
+        </div>
+      </div>
+      
+      <div class="coffee-section">
+        <img 
+          src="cid:lectora-image" 
+          alt="Disfruta tu lectura" 
+          class="coffee-image"
+          onerror="this.style.display='none'"
+        >
+        <p class="coffee-text">☕ Prepara tu café favorito, busca tu rincón favorito y disfruta de este primer capítulo.</p>
+      </div>
+      
+      <p>Si este capítulo te resulta valioso y quieres dominar la estructuración de llamadas al LLM, la creación de sistemas RAG avanzados y el despliegue de agentes en producción:</p>
+      
+      <div class="cta-section">
+        <a href="{{AMAZON_LINK}}" class="cta-button">Ver libro completo en Amazon — {{PRICE}}</a>
+      </div>
+    </div>
+    
+    <div class="signature">
+      <p>Un abrazo,</p>
+      <p class="name">Nelson Ramos</p>
+      <p class="title">Ingeniero en Sistemas · Autor</p>
+      <img 
+        src="{{PROFILE_IMAGE}}" 
+        alt="Nelson Ramos" 
+        class="author-avatar"
+        style="margin-top: 20px;"
+        onerror="this.style.display='none'"
+      >
+    </div>
+    
+    <div class="footer">
+      <p>Si no solicitaste este recurso, puedes ignorar este correo.</p>
+    </div>
+  </div>
+</body>
+</html>

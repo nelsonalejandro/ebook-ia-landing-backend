@@ -66,7 +66,7 @@ export class EmailService {
     const profileImgPath = path.join(process.cwd(), 'src', 'img', 'perfil.png');
     const profileImgBuffer = fs.existsSync(profileImgPath) ? fs.readFileSync(profileImgPath) : null;
 
-    const lectoraImgPath = path.join(process.cwd(), '..', 'public', 'assets', 'lectora_nueva.png');
+    const lectoraImgPath = path.join(process.cwd(), 'src', 'img', 'lectora_nueva.png');
     const lectoraImgBuffer = fs.existsSync(lectoraImgPath) ? fs.readFileSync(lectoraImgPath) : null;
 
     const attachments = [];
@@ -111,7 +111,7 @@ export class EmailService {
   }
 
   private async getEmailTemplate(): Promise<string> {
-    const templatePath = path.join(process.cwd(), '..', 'email_template.html');
+    const templatePath = path.join(process.cwd(), 'email_template.html');
     let html = fs.readFileSync(templatePath, 'utf-8');
     html = html.replace(/\{\{AMAZON_LINK\}\}/g, process.env.AMAZON_LINK || '#');
     html = html.replace('{{PROFILE_IMAGE}}', 'cid:profile-image');

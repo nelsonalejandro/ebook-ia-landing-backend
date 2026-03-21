@@ -1,4 +1,4 @@
-# ebook-ia-landing-api
+# ebook-ia-landing-backend
 
 Backend API para la landing page del libro "Prompt Engineering".
 
@@ -21,31 +21,7 @@ Crea un archivo `.env` basado en `.env.example`:
 cp .env.example .env
 ```
 
-Edita el `.env` con tus credenciales:
-
-```env
-NODE_ENV=development
-PORT=3001
-
-# Configuración SMTP
-EMAIL_HOST=mail.tudominio.cl
-EMAIL_PORT=587
-EMAIL_USER=tu@email.com
-EMAIL_PASS=tu_password
-
-# Link del libro en Amazon
-AMAZON_LINK=https://amazon.com/tu-libro
-
-# Token para autenticación de la API
-API_TOKEN=tu-token-seguro
-
-# Configuración de rate limit
-RATE_LIMIT_WINDOW_MS=900000
-RATE_LIMIT_MAX_REQUESTS=3
-
-# Orígenes CORS permitidos
-CORS_ORIGINS=http://localhost:5173,https://tu-dominio.cl
-```
+Edita el `.env` con tus credenciales SMTP.
 
 ## Imágenes del email
 
@@ -72,26 +48,29 @@ npm run start:prod
 
 ## Endpoints API
 
-### POST /api/subscribe
-Suscribe un email y envía el primer capítulo.
+### POST /api/send-email
+Envía el primer capítulo al email del suscriptor.
 
 **Headers:**
 ```
 Content-Type: application/json
+x-api-token: tu-token
 ```
 
 **Body:**
 ```json
 {
-  "email": "usuario@ejemplo.com"
+  "email": "usuario@ejemplo.com",
+  "amazonLink": "https://amazon.com/tu-libro",
+  "price": 9.99
 }
 ```
 
 **Respuesta exitosa:**
 ```json
 {
-  "success": true,
-  "message": "Email agregado a la cola de envío"
+  "ok": true,
+  "queued": true
 }
 ```
 
@@ -102,15 +81,20 @@ Verifica que el servidor esté corriendo.
 
 ```
 src/
-├── main.ts              # Punto de entrada
-├── app.module.ts        # Módulo principal
+├── main.ts
+├── app.module.ts
 ├── email/
-│   └── email.service.ts # Servicio de envío de emails
-└── img/                 # Imágenes para emails
+│   ├── email.controller.ts
+│   ├── email.service.ts
+│   └── dto/send-email.dto.ts
+├── common/guards/
+│   ├── api-auth.guard.ts
+│   └── rate-limit.guard.ts
+└── img/
     ├── perfil.png
     └── lectora_nueva.png
-email_template.html      # Plantilla del email
-dist/                    # Archivos compilados
+email_template.html
+dist/
 ```
 
 ## Licencia

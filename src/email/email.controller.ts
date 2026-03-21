@@ -12,7 +12,7 @@ export class EmailController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(ApiAuthGuard, RateLimitGuard)
   async sendEmail(@Body() dto: SendEmailDto, @Ip() ip: string) {
-    this.emailService.queueEmail(dto.email, ip);
+    this.emailService.queueEmail(dto.email, ip, dto.amazonLink, dto.price);
     return { ok: true, queued: true };
   }
 }

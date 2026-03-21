@@ -6,6 +6,8 @@ import * as path from 'path';
 interface EmailJob {
   email: string;
   ip: string;
+  amazonLink: string;
+  price?: number;
 }
 
 @Injectable()
@@ -27,8 +29,8 @@ export class EmailService {
     });
   }
 
-  queueEmail(email: string, ip: string): void {
-    this.emailQueue.push({ email, ip });
+  queueEmail(email: string, ip: string, amazonLink: string, price?: number): void {
+    this.emailQueue.push({ email, ip, amazonLink, price });
     if (!this.isProcessing) {
       this.processQueue();
     }
@@ -44,7 +46,7 @@ export class EmailService {
       if (!job) break;
 
       try {
-        await this.sendEmailJob(job.email, job.ip);
+        await this.sendEmailJob(job.email, job.ip, job.amazonLink, job.price);
       } catch (error) {
         console.error(`❌ Error en cola para ${job.email}:`, error.message);
       }
@@ -57,8 +59,8 @@ export class EmailService {
     this.isProcessing = false;
   }
 
-  private async sendEmailJob(email: string, ip: string): Promise<void> {
-    const htmlBody = await this.getEmailTemplate();
+  private async sendEmailJob(email: string, ip: string, amazonLink: string, price?: number): Promise<void> {
+    const htmlBody = await this.getEmailTemplate(amazonLink, price);
 
     const pdfPath = path.join(process.cwd(), '..', 'public', 'assets', 'primer_capitulo_gratis.pdf');
     const pdfBuffer = fs.existsSync(pdfPath) ? fs.readFileSync(pdfPath) : null;
@@ -110,10 +112,11 @@ export class EmailService {
     console.log(`✅ Email enviado a ${email} desde IP: ${ip}`);
   }
 
-  private async getEmailTemplate(): Promise<string> {
+  private async getEmailTemplate(amazonLink: string, price?: number): Promise<string> {
     const templatePath = path.join(process.cwd(), 'email_template.html');
     let html = fs.readFileSync(templatePath, 'utf-8');
-    html = html.replace(/\{\{AMAZON_LINK\}\}/g, process.env.AMAZON_LINK || '#');
+    html = html.replace(/\{\{AMAZON_LINK\}\}/g, amazonLink || '#');
+    html = html.replace(/\{\{PRICE\}\}/g, price ? `$${price} USD` : '$9.99 USD');
     html = html.replace('{{PROFILE_IMAGE}}', 'cid:profile-image');
     html = html.replace('https://www.nelsonramos.cl/assets/lectora_nueva.png', 'cid:lectora-image');
     return html;

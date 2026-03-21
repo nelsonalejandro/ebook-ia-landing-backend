@@ -62,7 +62,7 @@ export class EmailService {
   private async sendEmailJob(email: string, ip: string, amazonLink: string, price?: number): Promise<void> {
     const htmlBody = await this.getEmailTemplate(amazonLink, price);
 
-    const pdfPath = path.join(process.cwd(), '..', 'public', 'assets', 'primer_capitulo_gratis.pdf');
+    const pdfPath = path.join(process.cwd(), 'public', 'assets', 'primer_capitulo_gratis.pdf');
     const pdfBuffer = fs.existsSync(pdfPath) ? fs.readFileSync(pdfPath) : null;
 
     const profileImgPath = path.join(process.cwd(), 'src', 'img', 'perfil.png');

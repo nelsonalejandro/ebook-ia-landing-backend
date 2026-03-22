@@ -70,14 +70,14 @@ export class EmailService {
     const htmlBody = await this.getEmailTemplate(amazonLink, price);
     console.log('📧 HTML body length:', htmlBody.length);
 
-    const pdfPath = path.join(__dirname, '..', '..', 'public', 'assets', 'primer_capitulo_gratis.pdf');
+    const pdfPath = path.join(__dirname, '..', 'public', 'assets', 'primer_capitulo_gratis.pdf');
     const pdfBuffer = fs.existsSync(pdfPath) ? fs.readFileSync(pdfPath) : null;
     console.log('📧 PDF existe:', fs.existsSync(pdfPath));
 
-    const profileImgPath = path.join(__dirname, '..', '..', 'img', 'perfil.png');
+    const profileImgPath = path.join(__dirname, '..', 'img', 'perfil.png');
     const profileImgBuffer = fs.existsSync(profileImgPath) ? fs.readFileSync(profileImgPath) : null;
 
-    const lectoraImgPath = path.join(__dirname, '..', '..', 'img', 'lectora_nueva.png');
+    const lectoraImgPath = path.join(__dirname, '..', 'img', 'lectora_nueva.png');
     const lectoraImgBuffer = fs.existsSync(lectoraImgPath) ? fs.readFileSync(lectoraImgPath) : null;
 
     const attachments = [];

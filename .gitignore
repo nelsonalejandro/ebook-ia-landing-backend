@@ -3,4 +3,3 @@ node_modules/
 dist/
 .DS_Store
 src/img/
-email_template.html

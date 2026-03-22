@@ -63,21 +63,21 @@ export class EmailService {
     console.log('📧 Iniciando envío a:', email);
     console.log('📧 CWD:', process.cwd());
     
-    const templatePath = path.join(process.cwd(), 'email_template.html');
+    const templatePath = path.join(__dirname, 'email_template.html');
     console.log('📧 Template path:', templatePath);
     console.log('📧 Template existe:', fs.existsSync(templatePath));
 
     const htmlBody = await this.getEmailTemplate(amazonLink, price);
     console.log('📧 HTML body length:', htmlBody.length);
 
-    const pdfPath = path.join(process.cwd(), 'public', 'assets', 'primer_capitulo_gratis.pdf');
+    const pdfPath = path.join(__dirname, '..', '..', 'public', 'assets', 'primer_capitulo_gratis.pdf');
     const pdfBuffer = fs.existsSync(pdfPath) ? fs.readFileSync(pdfPath) : null;
     console.log('📧 PDF existe:', fs.existsSync(pdfPath));
 
-    const profileImgPath = path.join(process.cwd(), 'src', 'img', 'perfil.png');
+    const profileImgPath = path.join(__dirname, '..', '..', 'img', 'perfil.png');
     const profileImgBuffer = fs.existsSync(profileImgPath) ? fs.readFileSync(profileImgPath) : null;
 
-    const lectoraImgPath = path.join(process.cwd(), 'src', 'img', 'lectora_nueva.png');
+    const lectoraImgPath = path.join(__dirname, '..', '..', 'img', 'lectora_nueva.png');
     const lectoraImgBuffer = fs.existsSync(lectoraImgPath) ? fs.readFileSync(lectoraImgPath) : null;
 
     const attachments = [];
@@ -125,7 +125,7 @@ export class EmailService {
   }
 
   private async getEmailTemplate(amazonLink: string, price?: number): Promise<string> {
-    const templatePath = path.join(process.cwd(), 'email_template.html');
+    const templatePath = path.join(__dirname, 'email_template.html');
     let html = fs.readFileSync(templatePath, 'utf-8');
     html = html.replace(/\{\{AMAZON_LINK\}\}/g, amazonLink || '#');
     html = html.replace(/\{\{PRICE\}\}/g, price ? `$${price} USD` : '$9.99 USD');

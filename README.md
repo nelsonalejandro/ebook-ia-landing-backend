@@ -21,7 +21,21 @@ Crea un archivo `.env` basado en `.env.example`:
 cp .env.example .env
 ```
 
-Edita el `.env` con tus credenciales SMTP.
+### Variables de entorno
+
+| Variable | Descripción | Valor por defecto |
+|----------|-------------|-------------------|
+| `NODE_ENV` | Entorno de ejecución | `development` |
+| `PORT` | Puerto del servidor | `3001` |
+| `EMAIL_HOST` | Servidor SMTP | - |
+| `EMAIL_PORT` | Puerto SMTP | `587` |
+| `EMAIL_USER` | Usuario SMTP | - |
+| `EMAIL_PASS` | Contraseña SMTP | - |
+| `API_TOKEN` | Token para autenticar requests del frontend | - |
+| `RATE_LIMIT_WINDOW_MS` | Ventana de tiempo para rate limit (ms) | `900000` |
+| `RATE_LIMIT_MAX_REQUESTS` | Máximo de requests por ventana | `3` |
+| `CORS_ENABLED` | Habilitar/deshabilitar CORS (`true`/`false`) | `true` |
+| `CORS_ORIGINS` | Orígenes permitidos separados por coma | - |
 
 ## Imágenes del email
 
